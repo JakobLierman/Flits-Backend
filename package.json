@@ -1,8 +1,9 @@
 {
-  "name": "backend",
+  "name": "flits-backend",
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "start-local": "nodemon ./bin/www",
     "start": "node ./bin/www"
   },
   "dependencies": {
@@ -11,6 +12,6 @@
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
-    "pug": "2.0.0-beta11"
+    "nodemon": "^1.19.1"
   }
 }
