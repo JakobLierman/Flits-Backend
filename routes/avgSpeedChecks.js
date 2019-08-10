@@ -36,6 +36,8 @@ router.post("/", auth, function (req, res, next) {
         beginLocation: req.body.beginLocation,
         endLocation: req.body.endLocation,
         description: req.body.description,
+        likes: [],
+        dislikes: [],
         timeCreated: req.body.timeCreated,
         user: req.body.user
     });

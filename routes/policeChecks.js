@@ -36,6 +36,8 @@ router.post("/", auth, function (req, res, next) {
         location: req.body.location,
         description: req.body.description,
         imagePath: req.body.imagePath,
+        likes: [],
+        dislikes: [],
         timeCreated: req.body.timeCreated,
         expireDate: req.body.expireDate,
         user: req.body.user
