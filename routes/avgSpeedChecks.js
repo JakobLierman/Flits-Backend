@@ -37,7 +37,7 @@ router.post("/", auth, function (req, res, next) {
         endLocation: req.body.endLocation,
         description: req.body.description,
         timeCreated: req.body.timeCreated,
-        user: req.time.user
+        user: req.body.user
     });
     avgSpeedCheck.save(function (err, avgSpeedCheck) {
         if (err) return next(err);

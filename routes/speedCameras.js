@@ -38,8 +38,8 @@ router.post("/", auth, function (req, res, next) {
         description: req.body.description,
         imagePath: req.body.imagePath,
         timeCreated: req.body.timeCreated,
-        expireDate: req.time.expireDate,
-        user: req.time.user
+        expireDate: req.body.expireDate,
+        user: req.body.user
     });
     speedCamera.save(function (err, speedCamera) {
         if (err) return next(err);
