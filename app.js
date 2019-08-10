@@ -3,7 +3,19 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var mongoose = require('mongoose');
 
+// Mongoose
+mongoose.connect(
+    process.env.FLITS_DATABASE || 'mongodb://localhost/flitsdb'
+);
+
+// Models
+require("./models/User");
+require("./models/SpeedCamera");
+require("./models/AvgSpeedCheck");
+require("./models/PoliceCheck");
+// Routes
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
