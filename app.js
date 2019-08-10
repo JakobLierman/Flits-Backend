@@ -4,10 +4,15 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
+var passport = require('passport');
 
 // Mongoose
 mongoose.connect(
-    process.env.FLITS_DATABASE || 'mongodb://localhost/flitsdb'
+    process.env.FLITS_DATABASE || 'mongodb://localhost/flitsdb',
+    {
+      useCreateIndex: true,
+      useNewUrlParser: true
+    }
 );
 
 // Models
@@ -15,6 +20,10 @@ require("./models/User");
 require("./models/SpeedCamera");
 require("./models/AvgSpeedCheck");
 require("./models/PoliceCheck");
+
+// Passport
+require('./config/passport');
+
 // Routes
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -29,6 +38,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(passport.initialize());
 
 app.use('/API', indexRouter);
 app.use('/API/users', usersRouter);
