@@ -4,6 +4,7 @@ let mongoose = require("mongoose");
 let User = mongoose.model("User");
 let passport = require('passport');
 let jwt = require('express-jwt');
+let zxcvbn = require('zxcvbn');
 
 let auth = jwt({ secret: process.env.FLITS_BACKEND_SECRET });
 
@@ -58,13 +59,16 @@ router.post("/checkemail", function (req, res, next) {
 });
 
 router.post("/register", function (req, res, next) {
+  // Check if all fields are filled in
   if (
       !req.body.email ||
       !req.body.password ||
       !req.body.fullName
-  ) {
+  )
     return res.status(400).json({ message: "Please fill out all fields." });
-  }
+  // Check if password is strong enough
+  if (zxcvbn(req.body.password).score < 2)
+    return res.status(400).json({msg: 'Password is not strong enough.'});
 
   let user = new User();
   user.email = req.body.email;
@@ -80,6 +84,7 @@ router.post("/register", function (req, res, next) {
 });
 
 router.post("/login", function (req, res, next) {
+  // Check if all fields are filled in
   if (!req.body.email || !req.body.password) {
     return res.status(400).json({ message: "Please fill out all fields." });
   }
