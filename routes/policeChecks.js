@@ -9,7 +9,10 @@ let auth = jwt({ secret: process.env.FLITS_BACKEND_SECRET });
 
 /* GET policeChecks listing. */
 router.get('/', function(req, res, next) {
-    let query = PoliceCheck.find().populate("User");
+    let query = PoliceCheck.find()
+        .populate({path: "likes", populate: {path: "user"}})
+        .populate({path: "dislikes", populate: {path: "user"}})
+        .populate("user");
     query.exec(function(err, policeChecks) {
         if (err) return next(err);
         res.json(policeChecks);
@@ -18,7 +21,10 @@ router.get('/', function(req, res, next) {
 
 /* GET policeCheck by id. */
 router.param("policeCheckId", function (req, res, next, id) {
-    let query = PoliceCheck.findById(id).populate("User");
+    let query = PoliceCheck.findById(id)
+        .populate({path: "likes", populate: {path: "user"}})
+        .populate({path: "dislikes", populate: {path: "user"}})
+        .populate("user");
     query.exec(function (err, policeCheck) {
         if (err) return next(err);
         if (!policeCheck) return next(new Error("not found " + id));

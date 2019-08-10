@@ -9,7 +9,10 @@ let auth = jwt({ secret: process.env.FLITS_BACKEND_SECRET });
 
 /* GET speedCameras listing. */
 router.get('/', function(req, res, next) {
-    let query = SpeedCamera.find().populate("User");
+    let query = SpeedCamera.find()
+        .populate({path: "likes", populate: {path: "user"}})
+        .populate({path: "dislikes", populate: {path: "user"}})
+        .populate("user");
     query.exec(function(err, speedCameras) {
         if (err) return next(err);
         res.json(speedCameras);
@@ -18,7 +21,10 @@ router.get('/', function(req, res, next) {
 
 /* GET speedCamera by id. */
 router.param("speedCameraId", function (req, res, next, id) {
-    let query = SpeedCamera.findById(id).populate("User");
+    let query = SpeedCamera.findById(id)
+        .populate({path: "likes", populate: {path: "user"}})
+        .populate({path: "dislikes", populate: {path: "user"}})
+        .populate("user");
     query.exec(function (err, speedCamera) {
         if (err) return next(err);
         if (!speedCamera) return next(new Error("not found " + id));

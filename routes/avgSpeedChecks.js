@@ -8,7 +8,10 @@ let auth = jwt({ secret: process.env.FLITS_BACKEND_SECRET });
 
 /* GET avgSpeedChecks listing. */
 router.get('/', function(req, res, next) {
-    let query = AvgSpeedCheck.find().populate("User");
+    let query = AvgSpeedCheck.find()
+        .populate({path: "likes", populate: {path: "user"}})
+        .populate({path: "dislikes", populate: {path: "user"}})
+        .populate("user");
     query.exec(function(err, avgSpeedChecks) {
         if (err) return next(err);
         res.json(avgSpeedChecks);
@@ -17,7 +20,10 @@ router.get('/', function(req, res, next) {
 
 /* GET avgSpeedCheck by id. */
 router.param("avgSpeedCheckId", function (req, res, next, id) {
-    let query = AvgSpeedCheck.findById(id).populate("User");
+    let query = AvgSpeedCheck.findById(id)
+        .populate({path: "likes", populate: {path: "user"}})
+        .populate({path: "dislikes", populate: {path: "user"}})
+        .populate("user");
     query.exec(function (err, avgSpeedCheck) {
         if (err) return next(err);
         if (!avgSpeedCheck) return next(new Error("not found " + id));
