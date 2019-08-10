@@ -3,6 +3,7 @@ var router = express.Router();
 let mongoose = require('mongoose');
 let PoliceCheck = mongoose.model("PoliceCheck");
 let jwt = require('express-jwt');
+let moment = require('moment');
 
 let auth = jwt({ secret: process.env.FLITS_BACKEND_SECRET });
 
@@ -39,14 +40,18 @@ router.post("/", auth, function (req, res, next) {
         likes: [],
         dislikes: [],
         timeCreated: req.body.timeCreated,
-        expireDate: req.body.expireDate,
         user: req.body.user
     });
+    policeCheck.expireDate = calculateExpireDate(policeCheck.timeCreated);
     policeCheck.save(function (err, policeCheck) {
         if (err) return next(err);
         res.json(policeCheck);
     });
 });
+
+function calculateExpireDate(timeCreated) {
+    return moment(timeCreated).add(4, 'h').toDate();
+}
 
 /* DELETE policeCheck */
 router.delete("/:policeCheckId", auth, function (req, res, next) {

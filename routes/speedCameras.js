@@ -3,6 +3,7 @@ var router = express.Router();
 let mongoose = require('mongoose');
 let SpeedCamera = mongoose.model("SpeedCamera");
 let jwt = require('express-jwt');
+let moment = require('moment');
 
 let auth = jwt({ secret: process.env.FLITS_BACKEND_SECRET });
 
@@ -40,14 +41,35 @@ router.post("/", auth, function (req, res, next) {
         likes: [],
         dislikes: [],
         timeCreated: req.body.timeCreated,
-        expireDate: req.body.expireDate,
         user: req.body.user
     });
+    speedCamera.expireDate = calculateExpireDate(speedCamera.timeCreated, speedCamera.kind);
     speedCamera.save(function (err, speedCamera) {
         if (err) return next(err);
         res.json(speedCamera);
     });
 });
+
+function calculateExpireDate(timeCreated, kind) {
+    let expireDate;
+    switch (kind) {
+        case "Fixed speed camera":
+            expireDate = null;
+            break;
+        case "Onboard Police Vehicle Camera":
+            expireDate = moment(timeCreated).add(6, 'h').toDate();
+            break;
+        case "Lidar (super speed camera)":
+            expireDate = moment(timeCreated).add(5, 'd').toDate();
+            break;
+        case "Tripod speed camera":
+            expireDate = moment(timeCreated).add(6, 'h').toDate();
+            break;
+        default:
+            expireDate = moment(timeCreated).add(7, 'd').toDate();
+    }
+    return expireDate;
+}
 
 /* DELETE speedCamera */
 router.delete("/:speedCameraId", auth, function (req, res, next) {
