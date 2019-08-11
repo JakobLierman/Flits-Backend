@@ -3,7 +3,6 @@ let mongoose = require('mongoose');
 let AvgSpeedCheckSchema = new mongoose.Schema({
     beginLocation: { type: String, required: true },
     endLocation: { type: String, required: true },
-    description: String,
     likes: [
         {
             type: mongoose.Schema.Types.ObjectId,

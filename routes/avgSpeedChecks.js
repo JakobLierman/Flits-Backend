@@ -42,7 +42,6 @@ router.post("/", auth, function (req, res, next) {
     let avgSpeedCheck = new AvgSpeedCheck({
         beginLocation: req.body.beginLocation,
         endLocation: req.body.endLocation,
-        description: req.body.description,
         likes: [],
         dislikes: [],
         timeCreated: req.body.timeCreated,
