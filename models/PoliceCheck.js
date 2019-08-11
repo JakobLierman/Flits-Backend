@@ -2,8 +2,8 @@ let mongoose = require('mongoose');
 
 let PoliceCheckSchema = new mongoose.Schema({
     location: { type: String, required: true },
-    description: String,
-    imagePath: String,
+    description: { type: String, default: "" },
+    imagePath: { type: String, default: "" },
     likes: [
         {
             type: mongoose.Schema.Types.ObjectId,
