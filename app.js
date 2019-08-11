@@ -6,6 +6,9 @@ var logger = require('morgan');
 var mongoose = require('mongoose');
 var passport = require('passport');
 
+// Environment variables
+require('dotenv').config();
+
 // Mongoose
 mongoose.connect(
     process.env.FLITS_DATABASE || 'mongodb://localhost/flitsdb',
