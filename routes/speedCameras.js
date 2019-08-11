@@ -13,6 +13,7 @@ router.get('/', function(req, res, next) {
         .populate({path: "likes", populate: {path: "user"}})
         .populate({path: "dislikes", populate: {path: "user"}})
         .populate("user");
+    query.sort("-timeCreated");
     query.exec(function(err, speedCameras) {
         if (err) return next(err);
         res.json(speedCameras);

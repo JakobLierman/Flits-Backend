@@ -11,6 +11,7 @@ let auth = jwt({ secret: process.env.FLITS_BACKEND_SECRET });
 /* GET users listing. */
 router.get("/", function (req, res, next) {
   let query = User.find();
+  query.sort("fullName");
   query.exec(function (err, users) {
     if (err) return next(err);
     res.json(users);

@@ -12,6 +12,7 @@ router.get('/', function(req, res, next) {
         .populate({path: "likes", populate: {path: "user"}})
         .populate({path: "dislikes", populate: {path: "user"}})
         .populate("user");
+    query.sort("-timeCreated");
     query.exec(function(err, avgSpeedChecks) {
         if (err) return next(err);
         res.json(avgSpeedChecks);
