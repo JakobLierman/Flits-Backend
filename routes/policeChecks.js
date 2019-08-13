@@ -64,7 +64,7 @@ function calculateExpireDate(timeCreated) {
 router.delete("/:policeCheckId", auth, function (req, res, next) {
     req.policeCheck.remove(function (err) {
         if (err) return next(err);
-        res.json(req.policeCheck);
+        res.send(true);
     });
 });
 

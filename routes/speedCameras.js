@@ -82,7 +82,7 @@ function calculateExpireDate(timeCreated, kind) {
 router.delete("/:speedCameraId", auth, function (req, res, next) {
     req.speedCamera.remove(function (err) {
         if (err) return next(err);
-        res.json(req.speedCamera);
+        res.send(true);
     });
 });
 

@@ -57,7 +57,7 @@ router.post("/", auth, function (req, res, next) {
 router.delete("/:avgSpeedCheckId", auth, function (req, res, next) {
     req.avgSpeedCheck.remove(function (err) {
         if (err) return next(err);
-        res.json(req.avgSpeedCheck);
+        res.send(true);
     });
 });
 
