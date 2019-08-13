@@ -20,7 +20,8 @@ let PoliceCheckSchema = new mongoose.Schema({
     expireDate: Date,
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
     }
 });
 
