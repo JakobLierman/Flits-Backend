@@ -84,8 +84,9 @@ router.post("/register", function (req, res, next) {
     if (err) {
       return next(err);
     }
-    return res.json({ token: user.generateJWT(), user: user });
-  });
+    user.tempToken = user.generateJWT();
+    return res.json(user);
+  })
 });
 
 router.post("/login", function (req, res, next) {
@@ -98,7 +99,8 @@ router.post("/login", function (req, res, next) {
       return next(err);
     }
     if (user) {
-      return res.json({ token: user.generateJWT(), user: user });
+      user.tempToken = user.generateJWT();
+      return res.json(user);
     } else {
       return res.status(401).send(info);
     }
