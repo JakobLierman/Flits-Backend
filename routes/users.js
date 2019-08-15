@@ -80,7 +80,7 @@ router.post("/register", function (req, res, next) {
     if (err) {
       return next(err);
     }
-    return res.json({ token: user.generateJWT() });
+    return res.json({ token: user.generateJWT(), user: user });
   });
 });
 
@@ -94,7 +94,7 @@ router.post("/login", function (req, res, next) {
       return next(err);
     }
     if (user) {
-      return res.json({ token: user.generateJWT() });
+      return res.json({ token: user.generateJWT(), user: user });
     } else {
       return res.status(401).json(info);
     }
