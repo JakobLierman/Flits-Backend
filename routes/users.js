@@ -54,11 +54,11 @@ router.post("/isValidEmail", function (req, res, next) {
   // Check if all fields are filled in
   if (!req.body.email)
     return res.status(400).json({ message: "Please fill out all fields." });
-  User.find({ email: req.body.email }, function (err, result) {
+  User.find({ email: req.body.email.trim().toLowerCase() }, function (err, result) {
     if (result.length) {
       res.send(false);
     } else {
-      res.send(validator.validate(req.body.email));
+      res.send(validator.validate(req.body.email.trim().toLowerCase()));
     }
   });
 });
@@ -76,9 +76,9 @@ router.post("/register", function (req, res, next) {
     return res.status(400).json({msg: 'Password is not strong enough.'});
 
   let user = new User();
-  user.email = req.body.email;
+  user.email = req.body.email.trim().toLowerCase();
   user.setPassword(req.body.password);
-  user.fullName = req.body.fullName;
+  user.fullName = req.body.fullName.trim();
 
   user.save(function (err) {
     if (err) {
