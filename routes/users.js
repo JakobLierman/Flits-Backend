@@ -5,6 +5,7 @@ let User = mongoose.model("User");
 let passport = require('passport');
 let jwt = require('express-jwt');
 let zxcvbn = require('zxcvbn');
+let validator = require("email-validator");
 
 let auth = jwt({ secret: process.env.FLITS_BACKEND_SECRET });
 
@@ -19,7 +20,7 @@ router.get("/", function (req, res, next) {
 });
 
 /* GET user by id. */
-router.param("userid", function (req, res, next, id) {
+router.param("userId", function (req, res, next, id) {
   let query = User.findById(id);
   query.exec(function (err, user) {
     if (err) return next(err);
@@ -29,7 +30,7 @@ router.param("userid", function (req, res, next, id) {
   });
 });
 
-router.get("/id/:userid", function (req, res, next) {
+router.get("/id/:userId", function (req, res, next) {
   res.json(req.user);
 });
 
@@ -49,12 +50,12 @@ router.get("/:email", function (req, res, next) {
 });
 
 /* REGISTER / LOGIN functionality */
-router.post("/checkemail", function (req, res, next) {
+router.post("/isValidEmail", function (req, res, next) {
   User.find({ email: req.body.email }, function (err, result) {
     if (result.length) {
-      res.json({ email: "alreadyexists" });
+      res.send(false);
     } else {
-      res.json({ email: "ok" });
+      res.send(validator.validate(req.body.email));
     }
   });
 });
